@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Rapports - Police Municipale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>📘 Système de rapports - Police Municipale</h1>
+  </header>
+
+  <div class="container">
+
+    <form id="rapportForm">
+      <label for="titre">Titre du rapport</label>
+      <input type="text" id="titre" placeholder="Ex : Intervention sur la voie publique" required>
+
+      <label for="contenu">Contenu</label>
+      <textarea id="contenu" rows="5" placeholder="Détails de l’intervention, observations, suites à donner..." required></textarea>
+
+      <button type="submit">✅ Enregistrer le rapport</button>
+    </form>
+
+    <h2>📋 Rapports enregistrés</h2>
+    <div id="listeRapports"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
