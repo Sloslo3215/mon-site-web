@@ -1,35 +1,397 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Rapports - Police Municipale</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application CSU</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('logoPM.png') no-repeat center center fixed;
+      background-size: 400px;
+      color: #2c3e50;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3); /* Légère ombre noire pour mieux voir les éléments */
+      z-index: -1;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.7); /* Fond semi-transparent pour la section */
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .window-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 600px;
+      margin: auto;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.7); /* Fond semi-transparent */
+      border-radius: 12px;
+    }
+
+    .window {
+      background: rgba(255, 255, 255, 0.4); /* Plus de transparence pour une meilleure visibilité du logo */
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      backdrop-filter: blur(5px); /* Flou de fond */
+    }
+
+    .window h3 {
+      color: #003366;
+    }
+
+    .window button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    input[type="text"], input[type="password"], textarea, input[type="datetime-local"] {
+      padding: 12px;
+      width: 100%;
+      max-width: 500px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #cccccc;
+      font-size: 16px;
+      background-color: rgba(255, 255, 255, 0.8); /* Input légèrement transparent */
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+      width: 200px;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .inline-inputs {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .inline-inputs > div {
+      width: 48%;
+    }
+
+    .form-container {
+      background-color: rgba(212, 212, 212, 0.486); /* Fond transparent */
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    .form-container h2 {
+      color: #003366;
+      margin-bottom: 20px;
+    }
+
+    .form-container label {
+      font-weight: bold;
+      color: #003366;
+      margin-top: 10px;
+      display: block;
+    }
+
+    #confirmationMessage {
+      font-size: 16px;
+      color: #28a745;
+      margin-top: 15px;
+    }
+
+    .back-button {
+      padding: 10px 20px;
+      background-color: #f44336;
+      color: rgba(255, 255, 255, 0.61);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #d32f2f;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 150px;
+      padding: 12px;
+      font-size: 16px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid #cccccc;
+      border-radius: 8px;
+    }
+
+    .form-input {
+      padding: 12px;
+      width: 100%;
+      max-width: 500px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #cccccc;
+      font-size: 16px;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .submit-button {
+      margin-left: auto;
+      margin-top: -10px;
+      display: block;
+      width: 200px;
+    }
+
+    /* Nouveau style pour le rectangle des agents */
+    .selected-agent {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      margin: 5px;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 15px;
+      font-size: 14px;
+      white-space: nowrap;
+      max-width: 250px; /* Limite la largeur maximale */
+      position: relative;
+    }
+
+    /* Nouvelle croix de suppression intégrée et centrée */
+    .remove-agent {
+      background-color: transparent;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      position: absolute;
+      right: 5px; /* Position à droite */
+      top: 50%; /* Centré verticalement */
+      transform: translateY(-50%);
+    }
+
+    .remove-agent:hover {
+      background-color: rgba(255, 255, 255, 0.3); /* Effet sur survol */
+    }
+
+    .agent-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+  </style>
 </head>
 <body>
 
-  <header>
-    <h1>📘 Système de rapports - Police Municipale</h1>
-  </header>
-
-  <div class="container">
-
-    <form id="rapportForm">
-      <label for="titre">Titre du rapport</label>
-      <input type="text" id="titre" placeholder="Ex : Intervention sur la voie publique" required>
-
-      <label for="contenu">Contenu</label>
-      <textarea id="contenu" rows="5" placeholder="Détails de l’intervention, observations, suites à donner..." required></textarea>
-
-      <button type="submit">✅ Enregistrer le rapport</button>
+  <!-- Connexion -->
+  <div class="container login-container">
+    <h2>Connexion Utilisateur</h2>
+    <form id="loginForm">
+      <input type="text" id="codeUtilisateur" placeholder="Code utilisateur" required><br>
+      <input type="password" id="motDePasse" placeholder="Mot de passe" required><br>
+      <button type="submit">Se connecter</button>
     </form>
-
-    <h2>📋 Rapports enregistrés</h2>
-    <div id="listeRapports"></div>
-
+    <div id="errorMessage" class="hidden">Code utilisateur ou mot de passe incorrect.</div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- Accueil -->
+  <div class="container accueil-container hidden">
+    <h2>Page d'Accueil</h2>
+    <div class="window-container">
+      <div class="window">
+        <h3>Bulletin de service</h3>
+        <button onclick="navigateTo('bulletin')">Accéder</button>
+      </div>
+      <div class="window">
+        <h3>Archive bulletin</h3>
+        <button onclick="navigateTo('archiveBulletin')">Accéder</button>
+      </div>
+      <div class="window">
+        <h3>Rapport d'intervention</h3>
+        <button onclick="navigateTo('rapport')">Accéder</button>
+      </div>
+      <div class="window">
+        <h3>Archive Rapport</h3>
+        <button onclick="navigateTo('archiveRapport')">Accéder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulletin de service -->
+  <div class="container bulletin-container hidden">
+    <div class="form-container">
+      <h2>📘 Bulletin de service - Police Municipale</h2>
+      <button class="back-button" onclick="goBack()">← Retour</button>
+      <form id="bulletinForm">
+        <div class="inline-inputs">
+          <div>
+            <label for="debutService">Prise de service</label>
+            <input type="datetime-local" id="debutService" class="form-input" required>
+          </div>
+          <div>
+            <label for="finService">Fin de service</label>
+            <input type="datetime-local" id="finService" class="form-input" required>
+          </div>
+        </div>
+
+        <label for="agents">Agents</label>
+        <input list="agentsList" id="agents" name="agents" class="form-input" placeholder="Commencez à écrire un agent..." onchange="updateAgentSelection()" required>
+        <datalist id="agentsList">
+          <option value="Franck Skinner">
+          <option value="Luke McDAVID">
+          <option value="Luka TIERART">
+          <option value="Arnaud LEMOINE">
+        </datalist>
+
+        <div class="agent-container" id="agentList"></div>
+
+        <label for="contenu">Contenu</label>
+        <textarea id="contenu" class="form-input" placeholder="Détails..." required></textarea>
+
+        <button type="submit" class="submit-button">✅ Enregistrer</button>
+      </form>
+      <div id="confirmationMessage"></div>
+    </div>
+  </div>
+
+  <script>
+    const loginContainer = document.querySelector('.login-container');
+    const accueilContainer = document.querySelector('.accueil-container');
+    const bulletinContainer = document.querySelector('.bulletin-container');
+    const errorMessage = document.getElementById('errorMessage');
+    const form = document.getElementById('loginForm');
+    const codeUtilisateur = document.getElementById('codeUtilisateur');
+    const motDePasse = document.getElementById('motDePasse');
+
+    const validCode = "CSU";
+    const validPassword = "CSU67";
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (codeUtilisateur.value === validCode && motDePasse.value === validPassword) {
+        loginContainer.classList.add('hidden');
+        accueilContainer.classList.remove('hidden');
+      } else {
+        errorMessage.classList.remove('hidden');
+      }
+    });
+
+    function navigateTo(section) {
+      accueilContainer.classList.add('hidden');
+      if (section === 'bulletin') bulletinContainer.classList.remove('hidden');
+    }
+
+    function goBack() {
+      bulletinContainer.classList.add('hidden');
+      accueilContainer.classList.remove('hidden');
+    }
+
+    // Bulletin de service form handling
+    const bulletinForm = document.getElementById('bulletinForm');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+
+    let selectedAgents = [];
+
+    function updateAgentSelection() {
+      const agentInput = document.getElementById('agents').value;
+      if (agentInput && !selectedAgents.includes(agentInput)) {
+        selectedAgents.push(agentInput);
+        const agentDiv = document.createElement('div');
+        agentDiv.classList.add('selected-agent');
+        agentDiv.innerHTML = `${agentInput} <button class="remove-agent" onclick="removeAgent('${agentInput}')">×</button>`;
+        document.getElementById('agentList').appendChild(agentDiv);
+        document.getElementById('agents').value = ''; // Clear input after selection
+      }
+    }
+
+    function removeAgent(agent) {
+      selectedAgents = selectedAgents.filter(a => a !== agent);
+      const agentDivs = document.querySelectorAll('.selected-agent');
+      agentDivs.forEach(div => {
+        if (div.textContent.includes(agent)) {
+          div.remove();
+        }
+      });
+    }
+
+    bulletinForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const debut = document.getElementById('debutService').value;
+      const fin = document.getElementById('finService').value;
+      const agents = selectedAgents.join(', ');
+      const contenu = document.getElementById('contenu').value;
+
+      const bulletin = {
+        debut, fin, agents, contenu, date: new Date().toLocaleString()
+      };
+
+      const bulletins = JSON.parse(localStorage.getItem('bulletins') || '[]');
+      bulletins.push(bulletin);
+      localStorage.setItem('bulletins', JSON.stringify(bulletins));
+
+      confirmationMessage.textContent = `✅ Bulletin enregistré le ${bulletin.date}`;
+      bulletinForm.reset();
+      selectedAgents = [];
+      document.getElementById('agentList').innerHTML = ''; // Clear agent list after submission
+    });
+  </script>
 
 </body>
 </html>
