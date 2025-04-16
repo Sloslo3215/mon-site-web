@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mon Application</title>
+  <title>Gestion des Patrouilles</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Tableau de Bord</h1>
+    <h1>Gestion des Patrouilles</h1>
     <nav>
       <ul>
-        <li><a href="gestionPatrouilles.html">Gestion des Patrouilles</a></li>
+        <li><a href="index.html">Retour au tableau de bord</a></li>
         <li><a href="gestionBulletins.html">Gestion des Bulletins</a></li>
-        <li><a href="gestionUtilisateurs.html">Gestion des Utilisateurs</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <h2>Bienvenue sur le tableau de bord !</h2>
-    <p>Bienvenue dans notre application de gestion des services d'urgence.</p>
+    <h2>Créer une nouvelle patrouille</h2>
+    <form>
+      <label for="nomPatrouille">Nom de la patrouille :</label>
+      <input type="text" id="nomPatrouille" required>
+      <button type="submit">Ajouter</button>
+    </form>
   </main>
-
-  <script src="app.js"></script>
 </body>
 </html>
